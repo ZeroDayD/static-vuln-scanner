@@ -1,0 +1,37 @@
+name: Static Code Scan
+
+on:
+  pull_request:
+    paths:
+      - '**.js'
+      - '**.py'
+      - '**.php'
+      - 'patterns.yaml'
+      - 'scanner.py'
+      - '.github/workflows/security.yml'
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install PyYAML
+        run: pip install pyyaml
+
+      - name: Run static vuln scanner
+        run: |
+          python scanner.py
+
+      - name: Upload SARIF report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sarif-report
+          path: results.sarif

@@ -1,0 +1,15 @@
+- id: xss-innerhtml
+  description: "Potential XSS via innerHTML"
+  regex: 'innerHTML\s*=\s*.*'
+
+- id: eval-js
+  description: "Use of eval() in JavaScript"
+  regex: 'eval\s*\(.*\)'
+
+- id: raw-sql-python
+  description: "Raw SQL query in Python (string concat)"
+  regex: 'cursor\.execute\(.*\+.*\)'
+
+- id: insecure-sql-php
+  description: "Raw SQL in PHP with variable injection"
+  regex: 'mysqli_query\s*\(.*\$_(?:GET|POST|REQUEST)'
